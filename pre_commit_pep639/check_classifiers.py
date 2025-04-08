@@ -12,15 +12,30 @@ def find_license_classifiers(toml_file: Path) -> None:
     """
     Check the provided TOML file for the presence of a `License :: ...` classifier.
 
-    The provided TOML file is assumed to contain a `project` table, which contains a list of PyPI
-    classifiers in the `classifiers` field.
+    Two metadata specifications types are currently supported:
+        * PEP621 compliant: The provided TOML file is assumed to contain a `project` table, which
+        contains a list of PyPI classifiers in the `classifiers` field.
+        * Poetry: The provided TOML file is assumed to contain a `tools.poetry` table, which
+        contains a list of PyPI classifiers in the `classifiers` field.
     """
     with toml_file.open("rb") as f:
         contents = tomllib.load(f)
 
-    try:
-        classifiers = contents["project"]["classifiers"]
-    except KeyError:
+    if "project" in contents:
+        base = contents["project"]
+    elif "tool" in contents:
+        if "poetry" in contents["tool"]:
+            base = contents["tool"]["poetry"]
+        else:
+            # Unsupported metadata specification
+            return
+    else:
+        # Project metadata could not be found
+        return
+
+    classifiers = base.get("classifiers", None)
+    if classifiers is None:
+        # No classifiers found
         return
 
     for c in classifiers:
