@@ -1,0 +1,6 @@
+- id: check-classifiers
+  name: Check classifiers for license specification
+  entry: checkclassifiers
+  language: python
+  files: '^pyproject.toml$'
+  types: [toml]
