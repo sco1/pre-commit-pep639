@@ -33,6 +33,7 @@ Changelog = "https://github.com/sco1/pre-commit-pep639/blob/main/CHANGELOG.md"
 
 [project.scripts]
 checkclassifiers = "pre_commit_pep639.check_classifiers:main"
+checklicenseglob = "pre_commit_pep639.check_license_glob:main"
 
 [tool.uv]
 dev-dependencies = [

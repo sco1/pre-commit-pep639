@@ -4,6 +4,8 @@ import tomllib
 from collections import abc
 from pathlib import Path
 
+from pre_commit_pep639.core_utils import extract_metadata_base
+
 
 class LicenseClassifierError(Exception): ...  # noqa: D101
 
@@ -21,16 +23,9 @@ def find_license_classifiers(toml_file: Path) -> None:
     with toml_file.open("rb") as f:
         contents = tomllib.load(f)
 
-    if "project" in contents:
-        base = contents["project"]
-    elif "tool" in contents:
-        if "poetry" in contents["tool"]:
-            base = contents["tool"]["poetry"]
-        else:
-            # Unsupported metadata specification
-            return
-    else:
-        # Project metadata could not be found
+    base = extract_metadata_base(contents)
+    if base is None:
+        # Unsupported metadata spec
         return
 
     classifiers = base.get("classifiers", None)
