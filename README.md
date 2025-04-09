@@ -11,7 +11,7 @@ Add this to your `.pre-commit-config.yaml`
 
 ```yaml
 -   repo: https://github.com/sco1/pre-commit-pep639
-    rev: v0.1.0
+    rev: v0.2.0
     hooks:
     - id: check-classifiers
     - id: check-glob-resolve
