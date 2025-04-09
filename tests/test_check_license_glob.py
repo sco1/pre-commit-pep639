@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from pre_commit_pep639.check_license_glob import UnmatchedGlobError, get_license_globs, try_glob
+from pre_commit_pep639.check_glob_resolve import UnmatchedGlobError, get_license_globs, try_glob
 
 SAMPLE_GLOB_SINGLE = """\
 [project]

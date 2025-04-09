@@ -4,9 +4,9 @@
   language: python
   files: '^pyproject.toml$'
   types: [toml]
-- id: check-license-glob
+- id: check-glob-resolve
   name: Check that license file globs match a file in the repo
-  entry: checklicenseglob
+  entry: checkglobresolve
   language: python
   files: '^pyproject.toml$'
   types: [toml]

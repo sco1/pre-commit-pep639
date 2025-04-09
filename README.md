@@ -14,10 +14,12 @@ Add this to your `.pre-commit-config.yaml`
     rev: v0.1.0
     hooks:
     - id: check-classifiers
-    - id: check-license-glob
+    - id: check-glob-resolve
 ```
 
 ## Hooks
+**NOTE:** Unless otherwise noted, any metadata specification arrangements that are not explicitly supported should pass through without failing the hook. For example, if you have a build tool `foo` that specifies its metadata in a `[tools.foo]` table, its contents will not be checked.
+
 ### `check-classifiers`
 Check classifiers for license specification. Note that currently only `pyproject.toml` is inspected, if present.
 
@@ -26,12 +28,8 @@ Two metadata specification types are currently supported:
 * PEP621 compliant: The provided TOML file is assumed to contain a `project` table, which contains a list of PyPI classifiers in the `classifiers` field.
 * Poetry: The provided TOML file is assumed to contain a `tools.poetry` table, which contains a list of PyPI classifiers in the `classifiers` field.
 
-Unsupported metadata specifications will be passed through unchecked and do not fail the pre-commit hook.
-
-### `check-license-glob`
+### `check-glob-resolve`
 Check that [`license-files` glob(s)](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license-files) match file(s) in the repo.
-
-Only PEP621 compliant TOML files are officially supported by this hook. Unsupported metadata specifications will be passed through unchecked and do not fail the pre-commit hook.
 
 ## Python Version Support
 Starting with Python 3.11, a best attempt is made to support Python versions until they reach EOL, after which support will be formally dropped by the next minor or major release of this package, whichever arrives first. The status of Python versions can be found [here](https://devguide.python.org/versions/).

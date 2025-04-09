@@ -32,10 +32,9 @@ def get_license_globs(toml_file: Path) -> list[str]:
 
 def try_glob(glob: str, base_dir: Path = CWD) -> None:
     """
-    Check the provided glob pattern for matches relative to the current working directory.
+    Check the provided glob pattern for matches relative to the directory containing pyproject.toml.
 
-    If the glob does not match any project files, an `UnmatchedGlobError` is raised for downstream
-    handling.
+    If the glob does not match any files, an `UnmatchedGlobError` is raised for downstream handling.
     """
     glob_match = list(base_dir.glob(glob))
     if not glob_match:
@@ -49,6 +48,11 @@ def main(argv: abc.Sequence[str] | None = None) -> int:  # noqa: D103
 
     ec = 0
     for file in args.filenames:
+        # Per PEP 639, globs should be relative to the directory containing pyproject.toml
+        # This hook should only be executing for pyproject.toml files, so the assumption can be made
+        # here that we should be operating relative to the file's parent.
+        base_dir = file.parent
+
         license_globs = get_license_globs(file)
         if not license_globs:
             continue
@@ -56,7 +60,7 @@ def main(argv: abc.Sequence[str] | None = None) -> int:  # noqa: D103
         unmatched = []
         for glob in license_globs:
             try:
-                try_glob(glob)
+                try_glob(glob, base_dir=base_dir)
             except UnmatchedGlobError:
                 unmatched.append(glob)
 
