@@ -1,33 +1,14 @@
 import argparse
 import sys
-import tomllib
 from collections import abc
 from pathlib import Path
 
-from pre_commit_pep639.core_utils import extract_metadata_base
+from pre_commit_pep639.core_utils import get_license_globs
 
 CWD = Path()
 
 
 class UnmatchedGlobError(Exception): ...  # noqa: D101
-
-
-def get_license_globs(toml_file: Path) -> list[str]:
-    """
-    Check the provided TOML file its `license-files` field.
-
-    The provided TOML file is assumed to contain a `project` table, which contains a list of glob
-    patterns in a `license-files` field.
-    """
-    with toml_file.open("rb") as f:
-        contents = tomllib.load(f)
-
-    base = extract_metadata_base(contents)
-    if base is None:
-        # Unsupported metadata spec
-        return []
-
-    return base.get("license-files", [])  # type: ignore[no-any-return]
 
 
 def try_glob(glob: str, base_dir: Path = CWD) -> None:
@@ -45,7 +26,7 @@ def check_file(toml_file: Path) -> bool:
     """
     Helper processing pipeline for a `pyproject.toml` file.
 
-    Returns `True` if an unmatched glob is detected, otherwise returns `False`.
+    Returns `True` and emits warning(s) if an unmatched glob is detected, otherwise returns `False`.
     """
     # Per PEP 639, globs should be relative to the directory containing pyproject.toml
     # This hook should only be executing for pyproject.toml files, so the assumption can be made

@@ -10,3 +10,9 @@
   language: python
   files: '^pyproject.toml$'
   types: [toml]
+- id: check-glob-syntax
+  name: Check that license file globs contain valid syntax
+  entry: checkglobsyntax
+  language: python
+  files: '^pyproject.toml$'
+  types: [toml]

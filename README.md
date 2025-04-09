@@ -15,6 +15,7 @@ Add this to your `.pre-commit-config.yaml`
     hooks:
     - id: check-classifiers
     - id: check-glob-resolve
+    - id: check-glob-syntax
 ```
 
 ## Hooks
@@ -30,6 +31,16 @@ Two metadata specification types are currently supported:
 
 ### `check-glob-resolve`
 Check that [`license-files` glob(s)](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license-files) match file(s) in the repo.
+
+**NOTE:** Globs are checked relative to `pyproject.toml`'s parent directory, though in most cases this should be the same as the repository's root.
+
+### `check-glob-syntax`
+Check that [`license-files` glob(s)](https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license-files) do not contain syntax errors.
+
+The following syntax issues are currently checked:
+
+* Presence of leading slash character (`\`) in glob
+* Presence of parent directory indicator (`..`) in glob
 
 ## Python Version Support
 Starting with Python 3.11, a best attempt is made to support Python versions until they reach EOL, after which support will be formally dropped by the next minor or major release of this package, whichever arrives first. The status of Python versions can be found [here](https://devguide.python.org/versions/).
