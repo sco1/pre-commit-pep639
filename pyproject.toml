@@ -48,7 +48,7 @@ dev-dependencies = [
     "pytest-cov~=6.0",
     "pytest-randomly~=3.16",
     "ruff~=0.9",
-    "sco1-bumper~=1.0",
+    "sco1-bumper~=2.0",
     "tox~=4.23",
     "tox-uv~=1.17",
 ]
